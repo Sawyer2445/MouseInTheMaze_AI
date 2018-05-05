@@ -220,13 +220,6 @@ namespace maze
 
         }
        
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-            richTextBox1.SelectionStart = richTextBox1.Text.Length;
-            richTextBox1.ScrollToCaret();
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             timer1.Stop();
