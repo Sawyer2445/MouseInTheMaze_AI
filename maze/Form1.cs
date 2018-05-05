@@ -15,7 +15,7 @@ namespace maze
         public Form1()
         {
             InitializeComponent();
-            start = new Bitmap(pictureBox1.Image);
+            start = new Bitmap(panel1.BackgroundImage);
             for (int i = 0; i < start.Size.Width; i++)
             {
                 for (int j = 0; j < start.Height; j++)
@@ -24,11 +24,11 @@ namespace maze
                         start.SetPixel(i, j, Color.Black);
                 }
             }
-            movingUp = true;
-            movingDown = false;
+            movingUp = false;
+            movingDown = true;
             movingLeft = false;
             movingRight = false;
-            pictureBox1.Image = start;
+            //pictureBox1.Image = start;
         }
         Bitmap start;
         bool movingUp, movingDown, movingLeft, movingRight;
@@ -48,8 +48,8 @@ namespace maze
                 if (isExit())
                 {
                     //УсПЕХ
-                    pictureBox1.BackColor = Color.Green;
-                    pictureBox1.Size = new Size(50, 50);
+                    mouse.BackColor = Color.Green;
+                    mouse.Size = new Size(50, 50);
                 }
                 else if (wallBefore())
                 {
@@ -83,37 +83,36 @@ namespace maze
                 movingDown = false;
                 movingLeft = false;
                 movingRight = true;
+                return;
             }
-            else
+   
+            if (movingDown)
             {
-                if (movingDown)
-                {
-                    movingUp = false;
-                    movingDown = false;
-                    movingLeft = true;
-                    movingRight = false;
-                }
-                else
-                {
-                    if (movingLeft)
-                    {
-                        movingUp = true;
-                        movingDown = false;
-                        movingLeft = false;
-                        movingRight = false;
-                    }
-                    else
-                    {
-                        if (movingRight)
-                        {
-                            movingUp = false;
-                            movingDown = true;
-                            movingLeft = false;
-                            movingRight = false;
-                        }
-                    }
-                }
+                movingUp = false;
+                movingDown = false;
+                movingLeft = true;
+                movingRight = false;
+                return;
             }
+         
+            if (movingLeft)
+            {
+                movingUp = true;
+                movingDown = false;
+                movingLeft = false;
+                movingRight = false;
+                return;
+             }
+                    
+            if (movingRight)
+            {
+                movingUp = false;
+                movingDown = true;
+                movingLeft = false;
+                movingRight = false;
+                return;
+            }
+                    
         }
         /// <summary>
         /// Поворот налево
@@ -126,37 +125,36 @@ namespace maze
                 movingDown = false;
                 movingLeft = true;
                 movingRight = false;
+                return;
             }
-            else
+           
+            if (movingDown)
             {
-                if (movingDown)
-                {
-                    movingUp = false;
-                    movingDown = false;
-                    movingLeft = false;
-                    movingRight = true;
-                }
-                else
-                {
-                    if (movingLeft)
-                    {
-                        movingUp = false;
-                        movingDown = true;
-                        movingLeft = false;
-                        movingRight = false;
-                    }
-                    else
-                    {
-                        if (movingRight)
-                        {
-                            movingUp = true;
-                            movingDown = false;
-                            movingLeft = false;
-                            movingRight = false;
-                        }
-                    }
-                }
+                movingUp = false;
+                movingDown = false;
+                movingLeft = false;
+                movingRight = true;
+                return;
             }
+               
+            if (movingLeft)
+            {
+                movingUp = false;
+                movingDown = true;
+                movingLeft = false;
+                movingRight = false;
+                return;
+            }
+
+            if (movingRight)
+            {
+                movingUp = true;
+                movingDown = false;
+                movingLeft = false;
+                movingRight = false;
+                return;
+            }
+                    
         }
         private bool isExit()
         {
@@ -180,14 +178,15 @@ namespace maze
         /// <returns></returns>
         private bool wallBefore()
         {
-            if (start.GetPixel(mouse.Location.X, mouse.Location.Y - 2).G == 0 && movingUp)
-                return true;
-            if (start.GetPixel(mouse.Location.X, mouse.Location.Y + 2).G == 0 && movingDown)
-                return true;
-            if (start.GetPixel(mouse.Location.X - 2, mouse.Location.Y).G == 0 && movingLeft)
-                return true;
-            if (start.GetPixel(mouse.Location.X + 2, mouse.Location.Y).G == 0 && movingRight)
-                return true;
+            if (start.GetPixel(mouse.Location.X, mouse.Location.Y ).G == 0 && movingUp)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X, mouse.Location.Y + 10).G == 0 && movingDown)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X , mouse.Location.Y).G == 0 && movingLeft)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X + 10, mouse.Location.Y).G == 0 && movingRight)
+            { return true; }
+
             return false;
         }
         /// <summary>
@@ -218,14 +217,7 @@ namespace maze
             if (movingRight)
                 moveRight();
         }
-        private void moveUp()
-        {
-            movingUp = true;
-            movingDown = false;
-            movingLeft = false;
-            movingRight = false;
-            mouse.Location = new Point(mouse.Location.X, mouse.Location.Y - 1);
-        }
+       
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
@@ -236,6 +228,14 @@ namespace maze
         private void button2_Click(object sender, EventArgs e)
         {
             timer1.Stop();
+        }
+        private void moveUp()
+        {
+            movingUp = true;
+            movingDown = false;
+            movingLeft = false;
+            movingRight = false;
+            mouse.Location = new Point(mouse.Location.X, mouse.Location.Y - 1);
         }
 
         private void moveDown()
