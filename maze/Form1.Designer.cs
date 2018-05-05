@@ -52,7 +52,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 10;
+            this.timer1.Interval = 1;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // richTextBox1
@@ -79,9 +79,9 @@
             // 
             this.mouse.BackColor = System.Drawing.Color.Red;
             this.mouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.mouse.Location = new System.Drawing.Point(7, 306);
+            this.mouse.Location = new System.Drawing.Point(3, 3);
             this.mouse.Name = "mouse";
-            this.mouse.Size = new System.Drawing.Size(10, 10);
+            this.mouse.Size = new System.Drawing.Size(7, 7);
             this.mouse.TabIndex = 5;
             this.mouse.TabStop = false;
             // 
@@ -92,7 +92,7 @@
             this.panel1.Controls.Add(this.mouse);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(322, 322);
+            this.panel1.Size = new System.Drawing.Size(225, 225);
             this.panel1.TabIndex = 6;
             // 
             // Form1

@@ -16,21 +16,23 @@ namespace maze
         {
             InitializeComponent();
             start = new Bitmap(panel1.BackgroundImage);
+            end = new Bitmap(panel1.Width, panel1.Height);
             for (int i = 0; i < start.Size.Width; i++)
             {
                 for (int j = 0; j < start.Height; j++)
                 {
                     if (start.GetPixel(i, j).G == 0)
                         start.SetPixel(i, j, Color.Black);
+                    end.SetPixel(i, j, Color.GreenYellow);
                 }
             }
             movingUp = false;
-            movingDown = true;
+            movingDown = false;
             movingLeft = false;
-            movingRight = false;
-            //pictureBox1.Image = start;
+            movingRight = true;
         }
         Bitmap start;
+        Bitmap end;
         bool movingUp, movingDown, movingLeft, movingRight;
         private void button1_Click(object sender, EventArgs e)
         {
@@ -39,38 +41,23 @@ namespace maze
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
-            if (wallBefore())
+            if (isExit())
             {
-                richTextBox1.Text += "\nСТЕНА ВПЕРЕДИ - ПОВОРАЧИВАЮ НАПРАВО - ИДУ ВПЕРЕД\n";
-                turnRight();
+                panel1.BackgroundImage = end;
+                timer1.Stop();
+            }
+
+
+            if (wallRight())
+            {
                 moveForward();
-                if (isExit())
-                {
-                    //УсПЕХ
-                    mouse.BackColor = Color.Green;
-                    mouse.Size = new Size(50, 50);
-                }
-                else if (wallBefore())
-                {
-                    richTextBox1.Text += "\nСТЕНА ВПЕРЕДИ - ИДУ НАЗАД - ПОВОРАЧИВАЮ НАЛЕВО - ИДУ ВПЕРЕД\n";
-                    moveBack();
+                if (wallBefore())
                     turnLeft();
-                    moveForward();
-                    if (wallBefore())
-                    {
-                        richTextBox1.Text += "\nСТЕНА ВПЕРЕДИ - ИДУ НАЗАД - ПОВОРАЧИВАЮ НАЛЕВО\n";
-                        moveBack();
-                        turnLeft();
-                    }
-                }
             }
             else
             {
-                richTextBox1.Text += "\n БЛЯ СТЕНЫ НЕТ - ИДУ ВПЕРЕД\n";
-                moveForward();
+                turnRight();
             }
-                
         }
         /// <summary>
         /// Поворот вправо
@@ -158,7 +145,7 @@ namespace maze
         }
         private bool isExit()
         {
-            if ((mouse.Location.X > 147 && mouse.Location.X < 157) && (mouse.Location.Y >= 0 && mouse.Location.Y < 10))
+            if ((mouse.Location.X > 210 && mouse.Location.X < 225) && (mouse.Location.Y >= 210 && mouse.Location.Y < 220))
                 return true;
             return false;
         }
@@ -178,13 +165,13 @@ namespace maze
         /// <returns></returns>
         private bool wallBefore()
         {
-            if (start.GetPixel(mouse.Location.X, mouse.Location.Y ).G == 0 && movingUp)
+            if (start.GetPixel(mouse.Location.X + 1, mouse.Location.Y).G == 0 && movingUp)
             { return true; }
-            if (start.GetPixel(mouse.Location.X, mouse.Location.Y + 10).G == 0 && movingDown)
+            if (start.GetPixel(mouse.Location.X + 1, mouse.Location.Y + 3).G == 0 && movingDown)
             { return true; }
-            if (start.GetPixel(mouse.Location.X , mouse.Location.Y).G == 0 && movingLeft)
+            if (start.GetPixel(mouse.Location.X, mouse.Location.Y + 1).G == 0 && movingLeft)
             { return true; }
-            if (start.GetPixel(mouse.Location.X + 10, mouse.Location.Y).G == 0 && movingRight)
+            if (start.GetPixel(mouse.Location.X + 3, mouse.Location.Y + 1).G == 0 && movingRight)
             { return true; }
 
             return false;
@@ -203,19 +190,34 @@ namespace maze
             if (movingRight)
                 moveLeft();
         }
+        //стенка справа
+        private bool wallRight()
+        {
+            if (start.GetPixel(mouse.Location.X + 3, mouse.Location.Y).G == 0 && movingUp)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X, mouse.Location.Y + 3).G == 0 && movingDown)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X, mouse.Location.Y).G == 0 && movingLeft)
+            { return true; }
+            if (start.GetPixel(mouse.Location.X + 3, mouse.Location.Y + 3).G == 0 && movingRight)
+            { return true; }
+
+            return false;
+        }
         /// <summary>
         /// Шаг вперед
         /// </summary>
         private void moveForward()
         {
-            if (movingUp)
-                moveUp();
-            if (movingDown)
-                moveDown();
-            if (movingLeft)
-                moveLeft();
-            if (movingRight)
-                moveRight();
+                if (movingUp)
+                    moveUp();
+                if (movingDown)
+                    moveDown();
+                if (movingLeft)
+                    moveLeft();
+                if (movingRight)
+                    moveRight();
+
         }
        
 
